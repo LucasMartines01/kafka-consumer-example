@@ -1,4 +1,4 @@
-package com.lucasmartines.kafka.consumer.example;
+package com.lucasmartines.kafka;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
