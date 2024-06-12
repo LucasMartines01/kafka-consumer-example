@@ -21,14 +21,17 @@ public class KafkaMessageListener {
         logger.info("Received message: " + message);
     }
 
-    @RetryableTopic(attempts = "3", backoff = @Backoff(delay = 1000, maxDelay = 10000, multiplier = 2))
+    @RetryableTopic(attempts = "3")
     @KafkaListener(topics = "topic-demo", groupId = "group_id")
     public void listenCustomer(Customer customer) {
+        if(customer.getName().equals("fail")){
+            throw new RuntimeException("Customer failed to be processed");
+        }
         logger.info("Received message: " + customer.toString());
     }
 
     @DltHandler
-    public void listenDLT(Customer customer, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic, @Header(KafkaHeaders.OFFSET) long offset) {
-        logger.info("Received message from DLT: " + customer.getName() + " from topic: " + topic + " with offset: " + offset);
+    public void listenDLT(Customer customer) {
+        logger.info("Received message from DLT: " + customer.getName());
     }
 }
